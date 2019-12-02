@@ -12,17 +12,17 @@ resources:
       Properties: 
         Name: MicroserviceApiGateway
         
-   Outputs:
-     apiGatewayRestApiId:
-       Value:
-         Ref: MicroserviceApiGateway 
-       Export: 
-         Name: MicroserviceApiGateway-restApiId 
+  Outputs:
+    apiGatewayRestApiId:
+      Value:
+        Ref: MicroserviceApiGateway 
+      Export: 
+        Name: MicroserviceApiGateway-restApiId 
        
-     apiGatewayRestApiRootResourceId: 
-       Value:
-         Fn::GetAtt: 
-           - MicroserviceApiGateway 
-           - RootResourceId 
-       Export:
-         Name: MicroserviceApiGateway-rootResourceId
+    apiGatewayRestApiRootResourceId: 
+      Value:
+        Fn::GetAtt: 
+          - MicroserviceApiGateway 
+          - RootResourceId 
+      Export:
+        Name: MicroserviceApiGateway-rootResourceId
