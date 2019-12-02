@@ -4,6 +4,11 @@ provider:
   name: aws
   runtime: nodejs10.x
   region: ap-southeast-2
+  apiGateway: 
+    restApiId: 
+      'Fn::ImportValue': 'MicroserviceApiGateway-restApiId'
+    restApiRootResourceId: 
+      'Fn::ImportValue': 'MicroserviceApiGateway-rootResourceId'
   usagePlan:
     throttle:
       burstLimit: 5
