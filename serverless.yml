@@ -3,7 +3,7 @@ service: api-gateway
 provider:
   name: aws
   region: ap-southeast-2
-  stage: ${opt:stage, 'dev'}
+  stage: ${opt:stage,'dev'}
   
 custom:
   apiGatewayName: ApiGateway-${self:provider.stage}
