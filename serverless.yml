@@ -2,24 +2,18 @@ service: api-gateway
 
 provider:
   name: aws
-  runtime: nodejs10.x
   region: ap-southeast-2
-  apiGateway: 
-    restApiId: 
-      'Fn::ImportValue': 'MicroserviceApiGateway-restApiId'
-    restApiRootResourceId: 
-      'Fn::ImportValue': 'MicroserviceApiGateway-rootResourceId'
-  usagePlan:
-    throttle:
-      burstLimit: 5
-      rateLimit: 1
+  stage: ${opt:stage, 'dev'}
+  
+custom:
+  exportName: MicroserviceApiGateway-${self:provider.stage}
   
 resources:
   Resources: 
     MicroserviceApiGateway:
       Type: AWS::ApiGateway::RestApi
       Properties: 
-        Name: MicroserviceApiGateway
+        Name: ${self:custom.exportName}
         
   Outputs:
     apiGatewayRestApiId:
