@@ -6,26 +6,26 @@ provider:
   stage: ${opt:stage, 'dev'}
   
 custom:
-  exportName: MicroserviceApiGateway-${self:provider.stage}
+  apiGatewayName: ApiGateway-${self:provider.stage}
   
 resources:
   Resources: 
-    MicroserviceApiGateway:
+    ApiGateway:
       Type: AWS::ApiGateway::RestApi
       Properties: 
-        Name: ${self:custom.exportName}
+        Name: ${self:custom.apiGatewayName}
         
   Outputs:
     apiGatewayRestApiId:
       Value:
-        Ref: MicroserviceApiGateway 
+        Ref: ApiGateway 
       Export: 
-        Name: MicroserviceApiGateway-restApiId 
+        Name: ${self:custom.apiGatewayName}-restApiId 
        
     apiGatewayRestApiRootResourceId: 
       Value:
         Fn::GetAtt: 
-          - MicroserviceApiGateway 
+          - ApiGateway 
           - RootResourceId 
       Export:
-        Name: MicroserviceApiGateway-rootResourceId
+        Name: ${self:custom.apiGatewayName}-rootResourceId
