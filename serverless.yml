@@ -14,6 +14,10 @@ resources:
       Type: AWS::ApiGateway::RestApi
       Properties: 
         Name: ${self:custom.apiGatewayName}
+        Tags:
+          -
+            Key: Environment
+            Value: ${self:provider.stage}
         
   Outputs:
     apiGatewayRestApiId:
