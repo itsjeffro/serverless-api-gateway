@@ -7,7 +7,11 @@ provider:
   
 custom:
   apiGatewayName: ApiGateway-${self:provider.stage}
+  authorizerName: ClientAuthorizer-${self:provider.stage}
   
+functions:
+  clientAuthorizer
+
 resources:
   Resources: 
     ApiGateway:
@@ -18,7 +22,20 @@ resources:
           -
             Key: Environment
             Value: ${self:provider.stage}
-        
+    
+    ApiGatewayAuthorizer:
+      Type: AWS::ApiGateway::Authorizer
+      Properties:
+        Name: ${self:custom.authorizerName}
+        AuthorizerUri: !Ref clientAuthorizerLambdaFunction
+        AuthorizerCredentials: !GetAtt
+          - LambdaInvocationRole
+          - Arn
+        RestApiId:
+          Ref: ApiGateway
+        Type: TOKEN
+        IdentitySource: method.request.header.Authorization
+            
   Outputs:
     apiGatewayRestApiId:
       Value:
