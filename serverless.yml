@@ -30,9 +30,6 @@ resources:
         Name: ${self:custom.authorizerName}
         AuthorizerUri: 
           Ref: clientAuthorizerLambdaFunction
-        AuthorizerCredentials: !GetAtt
-          - LambdaInvocationRole
-          - Arn
         RestApiId:
           Ref: ApiGateway
         Type: TOKEN
