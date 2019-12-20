@@ -11,6 +11,7 @@ custom:
   
 functions:
   clientAuthorizer
+    handler: handler.clientAuthorizer
 
 resources:
   Resources: 
@@ -27,7 +28,8 @@ resources:
       Type: AWS::ApiGateway::Authorizer
       Properties:
         Name: ${self:custom.authorizerName}
-        AuthorizerUri: !Ref clientAuthorizerLambdaFunction
+        AuthorizerUri: 
+          Ref: clientAuthorizerLambdaFunction
         AuthorizerCredentials: !GetAtt
           - LambdaInvocationRole
           - Arn
