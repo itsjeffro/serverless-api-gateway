@@ -10,7 +10,7 @@ custom:
   authorizerName: ClientAuthorizer-${self:provider.stage}
   
 functions:
-  clientAuthorizer
+  clientAuthorizer:
     handler: handler.clientAuthorizer
 
 resources:
