@@ -29,7 +29,7 @@ resources:
       Properties:
         Name: ${self:custom.authorizerName}
         AuthorizerUri: 
-          Ref: clientAuthorizerLambdaFunction
+          Ref: clientAuthorizer
         RestApiId:
           Ref: ApiGateway
         Type: TOKEN
