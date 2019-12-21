@@ -12,6 +12,7 @@ custom:
 functions:
   clientAuthorizer:
     handler: handler.clientAuthorizer
+    cors: true
 
 resources:
   Resources: 
@@ -27,25 +28,41 @@ resources:
     ApiGatewayAuthorizer:
       Type: AWS::ApiGateway::Authorizer
       Properties:
-        Name: ${self:custom.authorizerName}
-        AuthorizerUri: 
-          Ref: clientAuthorizer
-        RestApiId:
-          Ref: ApiGateway
-        Type: TOKEN
+        AuthorizerResultTtlInSeconds: '300'
+        AuthorizerUri:
+          Fn::Join:
+            - ''
+            - 
+              - 'arn:aws:apigateway:'
+              - Ref: "AWS::Region"
+              - ':lambda:path/2015-03-31/functions/'
+              - Fn::GetAtt: "ClientAuthorizerLambdaFunction.Arn"
+              - "/invocations"
         IdentitySource: method.request.header.Authorization
+        IdentityValidationExpression: "Bearer .+"
+        Name: ${self:custom.authorizerName}
+        RestApiId: { Ref: ApiGateway }
+        Type: TOKEN
             
   Outputs:
     apiGatewayRestApiId:
       Value:
         Ref: ApiGateway 
-      Export: 
+      Export:
         Name: ${self:custom.apiGatewayName}-restApiId 
        
     apiGatewayRestApiRootResourceId: 
       Value:
-        Fn::GetAtt: 
+        Fn::GetAtt:
           - ApiGateway 
           - RootResourceId 
       Export:
         Name: ${self:custom.apiGatewayName}-rootResourceId
+
+    apiGatewayRestApiAuthorizer:
+      Value:
+        Fn::GetAtt:
+          - ClientAuthorizerLambdaFunction 
+          - Arn 
+      Export:
+        Name: ${self:custom.apiGatewayName}-authorizer
