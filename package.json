@@ -1,0 +1,18 @@
+{
+  "name": "microservice-api-gateway",
+  "author": "Jeff Nielsen",
+  "version": "1.0.0",
+  "license": "MIT",
+  "description": "",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/itsjeffro/microservice-api-gateway.git"
+  },
+  "bugs": {
+    "url": "https://github.com/itsjeffro/microservice-api-gateway/issues"
+  },
+  "homepage": "https://github.com/itsjeffro/microservice-api-gateway#readme",
+  "dependencies": {
+    "jsonwebtoken": "^8.5.1"
+  }
+}
