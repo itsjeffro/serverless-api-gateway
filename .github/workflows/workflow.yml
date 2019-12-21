@@ -17,8 +17,7 @@ jobs:
           node-version: '10.16.3'
       - name: Serverless deploy
         run: |
-          echo ${{ secrets.AWS_ACCESS_KEY_ID }}
-          echo ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          npm i --production
           npm i serverless -g
           serverless config credentials --provider aws --key ${{ secrets.AWS_ACCESS_KEY_ID }} --secret ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           serverless deploy
