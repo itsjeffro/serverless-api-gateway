@@ -7,6 +7,8 @@ pipelines:
           name: Build
           script:
             - npm i --production
+          artifacts:
+            - node_modules/**
       - step:
           name: Deploy
           script:
