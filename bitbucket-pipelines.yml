@@ -21,8 +21,6 @@ pipelines:
           name: Deploy to production
           trigger: manual
           script:
-            - cp config.yml.dist config.yml
-            - echo "\${ssm:/aws/reference/secretsmanager/prod/microservice/config~true}" > ./config.yml
             - npm i serverless -g
             - serverless config credentials --provider aws --key $AWS_ACCESS_KEY_ID --secret $AWS_SECRET_ACCESS_KEY
             - serverless deploy --stage prod
