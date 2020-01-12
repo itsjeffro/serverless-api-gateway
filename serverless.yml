@@ -9,7 +9,7 @@ provider:
   
 custom:
   apiGatewayName: ApiGateway-${self:provider.stage}
-  authorizerName: ClientAuthorizer-${self:provider.stage}
+  apiGatewayaAuthorizerName: ClientAuthorizer-${self:provider.stage}
   
 functions:
   clientAuthorizer:
@@ -17,7 +17,10 @@ functions:
     cors: true
 
 resources:
-  Resources: 
+  Resources:
+
+    # API gateway
+    # - Our reusable API gateway for our individual services managed in their own repositories.
     ApiGateway:
       Type: AWS::ApiGateway::RestApi
       Properties: 
@@ -27,6 +30,9 @@ resources:
             Key: Environment
             Value: ${self:provider.stage}
     
+    # API gateway authorizer
+    # - Our reusable authorizer which we will attach to our API gateway. We will reference the API gateway using the key/name from the "ApiGateway" resource above.
+    # - The lambda is reference by key/name under functions. For example "clientAuthorizer" becomes "ClientAuthorizerLambdaFunction.Arn".
     ApiGatewayAuthorizer:
       Type: AWS::ApiGateway::Authorizer
       Properties:
@@ -41,11 +47,13 @@ resources:
               - "/invocations"
         IdentitySource: method.request.header.Authorization
         IdentityValidationExpression: "Bearer .+"
-        Name: ${self:custom.authorizerName}
+        Name: ${self:custom.apiGatewayaAuthorizerName}
         RestApiId: { Ref: ApiGateway }
         Type: TOKEN
             
   Outputs:
+
+    # API gateway outputs
     apiGatewayRestApiId:
       Value:
         Ref: ApiGateway 
@@ -60,6 +68,7 @@ resources:
       Export:
         Name: ${self:custom.apiGatewayName}-rootResourceId
 
+    # API gateway authorizer outputs
     apiGatewayRestApiAuthorizer:
       Value:
         Ref: ApiGatewayAuthorizer
