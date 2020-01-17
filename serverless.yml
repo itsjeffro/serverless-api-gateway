@@ -29,6 +29,14 @@ resources:
           -
             Key: Environment
             Value: ${self:provider.stage}
+
+    # API gateway resource versions
+    ApiGatewayResourceVersionOne:
+      Type: AWS::ApiGateway::Resource
+      Properties: 
+        ParentId: { "Fn::GetAtt": [ "ApiGateway", "RootResourceId" ] }
+        PathPart: v1
+        RestApiId: { Ref: ApiGateway }
     
     # API gateway authorizer
     # - Our reusable authorizer which we will attach to our API gateway. We will reference the API gateway using the key/name from the "ApiGateway" resource above.
@@ -67,6 +75,13 @@ resources:
           - RootResourceId 
       Export:
         Name: ${self:custom.apiGatewayName}-rootResourceId
+
+    # API gateway resources
+    apiGatewayRestApiVersionOneResourceId:
+      Value:
+        Ref: ApiGatewayResourceVersionOne
+      Export:
+        Name: ${self:custom.apiGatewayName}-versionOneResourceId
 
     # API gateway authorizer outputs
     apiGatewayRestApiAuthorizer:
