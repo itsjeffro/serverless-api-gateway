@@ -62,3 +62,4 @@ serverless invoke local --function clientAuthorizer --data '{"authorizationToken
 ## Additional information
 
 - https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/intrinsic-function-reference-importvalue.html
+- https://theburningmonk.com/cloudformation-ref-and-getatt-cheatsheet/
