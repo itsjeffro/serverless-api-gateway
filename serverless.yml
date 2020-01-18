@@ -15,11 +15,11 @@ custom:
   
 functions:
   clientAuthorizer:
-    handler: handler.clientAuthorizer
+    handler: src/handlers/authorizer.auth
     cors: true
 
   versionOne:
-    handler: versionOne.get
+    handler: src/handlers/versionOne.get
     events:
       - http:
           path: v1
