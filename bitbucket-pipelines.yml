@@ -3,7 +3,13 @@ image: node:10.16.3
 pipelines:
   branches: 
     master:
-      - step: 
+      - step:
+          name: Test
+          script:
+            - npm i
+            - npm run test
+
+      - step:
           name: Build
           script:
             - npm i --production
