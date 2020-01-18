@@ -47,6 +47,7 @@ resources:
         IdentitySource: method.request.header.Authorization
         IdentityValidationExpression: "Bearer .+"
         Name: ${self:custom.apiGatewayaAuthorizerName}
+        AuthorizerResultTtlInSeconds: '0'
         RestApiId: { Ref: ApiGatewayRestApi }
         Type: TOKEN
 
