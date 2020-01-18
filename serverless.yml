@@ -31,6 +31,7 @@ resources:
             Value: ${self:provider.stage}
 
     # API gateway resource versions
+    # - We create a resource instead of the serverless function/event http so that another API gateway is not created.
     ApiGatewayResourceVersionOne:
       Type: AWS::ApiGateway::Resource
       Properties: 
