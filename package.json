@@ -14,5 +14,11 @@
   "homepage": "https://github.com/itsjeffro/microservice-api-gateway#readme",
   "dependencies": {
     "jsonwebtoken": "^8.5.1"
+  },
+  "scripts": {
+    "test": "jest"
+  },
+  "devDependencies": {
+    "jest": "^24.9.0"
   }
 }
