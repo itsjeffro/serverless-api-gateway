@@ -19,7 +19,7 @@ functions:
     cors: true
 
   versionOne:
-    handler: src/handlers/versionOne.get
+    handler: src/handlers/version.versionOne
     events:
       - http:
           path: v1
