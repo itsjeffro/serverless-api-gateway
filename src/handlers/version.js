@@ -1,4 +1,4 @@
-module.exports.clientAuthorizer = async (event) => {
+module.exports.versionOne = async (event) => {
   const body = {
     message: "You're viewing version 1."
   };
