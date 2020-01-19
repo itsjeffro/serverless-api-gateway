@@ -8,8 +8,14 @@ module.exports.auth = async (event, context, callback) => {
     
     const signingKey = process.env.JWT_SIGNING_KEY;
     const decodedToken = jwt.verify(token, signingKey);
+
+    const context = {
+      issuer: decodedToken.iss,
+      user: decodedToken.sub,
+      company: decodedToken.company
+    };
     
-    return callback(null, auth.generatePolicy('Allow', decodedToken));
+    return callback(null, auth.generatePolicy('Allow', context));
   } catch (e) {
     console.error(e);
     

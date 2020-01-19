@@ -45,3 +45,17 @@ test('Get methodArn with options', () => {
 
   expect(auth.getMethodArn(options)).toBe('arn:aws:execute-api:regionName:accountNumber:restApiId/stage/*/*');
 });
+
+test.each([
+  [null, {}],
+  [{user: 'username'}, {user: 'username'}]
+])('Policy to return %o from %o that was initally passed', (actual, expected) => {
+  const event = {
+    methodArn: 'arn:aws:execute-api:regionName:accountNumber:restApiId/stage/METHOD/resourcePath',
+  };
+
+  const auth = new Auth(event);
+  const policy = auth.generatePolicy('allow', actual);
+
+  expect(policy.context).toMatchObject(expected);
+});
