@@ -63,27 +63,29 @@ class Auth {
    * Returns policy.
    *
    * @param {string} effect
-   * @param {object} decodedToken
+   * @param {object} context
    */
-  generatePolicy(effect, decodedToken) {
-    return {
-      "principalId": "user", 
-      "policyDocument": {
-        "Version": "2012-10-17",
-        "Statement": [
+  generatePolicy(effect, context) {
+    let policy = {
+      principalId: "user", 
+      policyDocument: {
+        Version: "2012-10-17",
+        Statement: [
           {
-            "Action": "execute-api:Invoke",
-            "Effect": effect,
-            "Resource": this.getMethodArn({method: '*'}),
+            Action: "execute-api:Invoke",
+            Effect: effect,
+            Resource: this.getMethodArn({method: '*'}),
           }
         ]
       },
-      "context": {
-        "issuer": decodedToken.iss,
-        "user": decodedToken.sub,
-        "company": decodedToken.company
-      }
+      context: {},
     };
+
+    if (context) {
+      policy.context = context;
+    }
+
+    return policy;
   }
 }
 
