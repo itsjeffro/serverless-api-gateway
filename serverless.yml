@@ -78,7 +78,7 @@ resources:
     # ===========================
     # - Stores tenant name and database mapping
     InternalTenantsTable:
-      Type: AWS::DynamoDb::Table
+      Type: AWS::DynamoDB::Table
       Properties:
         TableName: internal_tenants
         AttributeDefinitions:
@@ -89,12 +89,15 @@ resources:
           -
             AttributeName: tenant_name
             KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
             
     # Table: InternalServiceDocsTable
     # ===============================
     # - Stores service documentation
     InternalServiceDocsTable:
-      Type: AWS::DynamoDb::Table
+      Type: AWS::DynamoDB::Table
       Properties:
         TableName: internal_service_docs
         AttributeDefinitions:
@@ -105,12 +108,15 @@ resources:
           -
             AttributeName: service_name_version
             KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
             
     # Table: InternalServicePoliciesTable
     # ===============================
     # - Stores service policies
     InternalServicePoliciesTable:
-      Type: AWS::DynamoDb::Table
+      Type: AWS::DynamoDB::Table
       Properties:
         TableName: internal_service_policies
         AttributeDefinitions:
@@ -121,6 +127,9 @@ resources:
           -
             AttributeName: service_name_version
             KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
             
   Outputs:
 
