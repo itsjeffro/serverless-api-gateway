@@ -58,7 +58,7 @@ class Policy {
           {
             Action: "execute-api:Invoke",
             Effect: effect,
-            Resources: this.getAllowedResources(),
+            Resource: this.getAllowedResources(),
           }
         ]
       },

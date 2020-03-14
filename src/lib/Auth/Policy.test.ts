@@ -38,7 +38,7 @@ describe("Tests Policy", () => {
         policyDocument: {
           Statement: [
             {
-              Resources: ["*"]
+              Resource: ["*"]
             }
           ]
         }
