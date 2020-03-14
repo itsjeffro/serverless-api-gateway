@@ -6,7 +6,7 @@ class SecretsManager {
    *
    * @param {string} name 
    */
-  driver(name) {
+  driver(name: string) {
     return this;
   }
 
@@ -36,11 +36,11 @@ class SecretsManager {
    * Returns a mixed value/secret from the driver.
    *
    * @param {string} key 
-   * @returns {*}
+   * @returns {any}
    */
-  getValue(key) {
+  getValue(key: string) {
     return this.driver;
   }
 }
 
-module.exports = SecretsManager;
+export default SecretsManager;

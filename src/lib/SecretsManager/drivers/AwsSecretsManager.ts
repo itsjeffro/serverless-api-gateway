@@ -1,12 +1,14 @@
 var AWS = require('aws-sdk');
 
 class AwsSecretsManager {
+  client: any;
+
   /**
    * AwsSecretsManager constructor.
    *
    * @param {object} config 
    */
-  constructor(config) {
+  constructor(config: any) {
     this.client = new AWS.SecretsManager(config.aws);
   }
 
@@ -16,8 +18,10 @@ class AwsSecretsManager {
    * @param {string} key
    * @return {*}
    */
-  getValue(key) {
-    this.client.getSecretValue({SecretId: secretName}, function(err, data) {
+  getValue(key: string) {
+    const params = {};
+
+    this.client.getSecretValue(params, function(err: any, data: any) {
       if (err) {
         if (err.code === 'DecryptionFailureException') {
           throw err;
@@ -49,4 +53,4 @@ class AwsSecretsManager {
   }
 }
 
-module.exports = AwsSecretsManager;
+export default AwsSecretsManager;

@@ -1,5 +1,14 @@
+import LambdaEventInteface from "../LambdaEvent/LambdaEventInterface";
+
 class Auth {
-  constructor(event) {
+  event: LambdaEventInteface;
+
+  /**
+   * Auth constructor.
+   *
+   * @param {LambdaEventInteface} event
+   */
+  constructor(event: LambdaEventInteface) {
     this.event = event;
   }
 
@@ -9,9 +18,11 @@ class Auth {
    * @return {object}
    */
   getMethodArnSegments() {
-    let tmp = this.event.methodArn.split(':');
+    const methodArn = this.event.methodArn || "";
+
+    let tmp = methodArn.split(':');
     let apiTmp = tmp[5].split('/');
-    let resource = '';
+    let resource = "";
 
     if (apiTmp[3]) {
       resource += apiTmp.slice(3, apiTmp.length).join('/');
@@ -34,7 +45,7 @@ class Auth {
    * @param {object} options
    * @return {string}
    */
-  getMethodArn(options) {
+  getMethodArn(options: object) {
     let arn = {
       ...this.getMethodArnSegments(),
       ...options,
@@ -49,7 +60,7 @@ class Auth {
    * @return {string}
    */
   getToken() {
-    const tokenString = this.event.authorizationToken;
+    const tokenString = this.event.authorizationToken || "";
     const match = tokenString.match(/^Bearer (.*)$/);
     
     if (! match || match.length < 2) {
@@ -58,35 +69,6 @@ class Auth {
     
     return match[1];
   }
-
-  /**
-   * Returns policy.
-   *
-   * @param {string} effect
-   * @param {object} context
-   */
-  generatePolicy(effect, context) {
-    let policy = {
-      principalId: "user", 
-      policyDocument: {
-        Version: "2012-10-17",
-        Statement: [
-          {
-            Action: "execute-api:Invoke",
-            Effect: effect,
-            Resource: this.getMethodArn({method: '*'}),
-          }
-        ]
-      },
-      context: {},
-    };
-
-    if (context) {
-      policy.context = context;
-    }
-
-    return policy;
-  }
 }
 
-module.exports = Auth;
+export default Auth;

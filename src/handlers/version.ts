@@ -1,4 +1,4 @@
-module.exports.versionOne = async (event) => {
+module.exports.versionOne = async (event: any) => {
   const body = {
     message: "You're viewing version 1."
   };

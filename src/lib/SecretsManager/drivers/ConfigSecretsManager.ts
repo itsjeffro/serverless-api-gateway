@@ -1,10 +1,12 @@
 class ConfigSecretsManager {
+  config: object;
+
   /**
    * ConfigSecretsManager constructor.
    *
    * @param {object} config 
    */
-  constructor(config) {
+  constructor(config: object) {
     this.config = config;
   }
 
@@ -14,7 +16,7 @@ class ConfigSecretsManager {
    * @param {string} key
    * @return {*}
    */
-  getValue(key) {
+  getValue(key: string) {
     return '';
   }
 }

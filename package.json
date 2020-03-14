@@ -4,6 +4,11 @@
   "version": "1.0.0",
   "license": "MIT",
   "description": "",
+  "scripts": {
+    "test": "jest",
+    "build": "tsc",
+    "watch": "tsc --watch"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/itsjeffro/microservice-api-gateway.git"
@@ -12,13 +17,16 @@
     "url": "https://github.com/itsjeffro/microservice-api-gateway/issues"
   },
   "homepage": "https://github.com/itsjeffro/microservice-api-gateway#readme",
+  "devDependencies": {
+    "@types/jest": "^25.1.4",
+    "@types/jsonwebtoken": "^8.3.8",
+    "@types/node": "^13.9.1",
+    "jest": "^24.9.0",
+    "ts-jest": "^25.2.1",
+    "ts-loader": "^6.2.1",
+    "typescript": "^3.8.3"
+  },
   "dependencies": {
     "jsonwebtoken": "^8.5.1"
-  },
-  "scripts": {
-    "test": "jest"
-  },
-  "devDependencies": {
-    "jest": "^24.9.0"
   }
 }
