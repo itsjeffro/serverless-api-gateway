@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import LambdaEventInterface from "../lib/LambdaEvent/LambdaEventInterface";
 import Auth from "../lib/Auth";
-import Policy from "../lib/Auth/Policy";
+import PolicyDocument from "../lib/Auth/PolicyDocument";
 import DecodedTokenInterface from '../lib/Jwt/DecodedTokenInterface';
 
 module.exports.auth = async (event: LambdaEventInterface, context: any, callback: any) => {
@@ -26,7 +26,7 @@ module.exports.auth = async (event: LambdaEventInterface, context: any, callback
     console.log("Generating policy document...");
 
     const decodedToken = verifiedToken as DecodedTokenInterface;
-    const policy = new Policy(event);
+    const policy = new PolicyDocument(event);
 
     policy.addAllowedResource("*");
 
@@ -43,7 +43,7 @@ module.exports.auth = async (event: LambdaEventInterface, context: any, callback
     console.error(e);
    
     if (e.name === "JsonWebTokenError") {
-      return callback("Unauthoized");
+      return callback("Unauthorized");
     }
 
     return callback("Error: Invalid token");

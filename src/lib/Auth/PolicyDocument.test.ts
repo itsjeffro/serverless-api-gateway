@@ -1,7 +1,8 @@
-import Policy from "./Policy";
+import PolicyDocument from "./PolicyDocument";
 import LambdaEventInterface from "../LambdaEvent/LambdaEventInterface";
+import { EFFECT_ALLOW } from "./constants";
 
-describe("Tests Policy", () => {
+describe("Tests PolicyDocument", () => {
 
   describe("Tests generated policy document", () => {
 
@@ -13,8 +14,8 @@ describe("Tests Policy", () => {
         methodArn: 'arn:aws:execute-api:regionName:accountNumber:restApiId/stage/METHOD/resourcePath',
       };
     
-      const policy = new Policy(event);
-      const policyDocument = policy.generate('allow', actual);
+      const policy = new PolicyDocument(event);
+      const policyDocument = policy.generate(EFFECT_ALLOW, actual);
     
       expect(policyDocument.context).toMatchObject(expected);
     });
@@ -28,17 +29,19 @@ describe("Tests Policy", () => {
         methodArn: 'arn:aws:execute-api:regionName:accountNumber:restApiId/stage/METHOD/resourcePath',
       };
     
-      const policy = new Policy(event);
+      const policy = new PolicyDocument(event);
 
       policy.addAllowedResource("*");
 
-      const policyDocument = policy.generate('allow', {});
+      const policyDocument = policy.generate(EFFECT_ALLOW, {});
 
       const expected = {
         policyDocument: {
           Statement: [
             {
-              Resource: ["*"]
+              Resource: [
+                "*"
+              ]
             }
           ]
         }
