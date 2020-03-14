@@ -15,8 +15,10 @@ module.exports.auth = async (event: LambdaEventInterface, context: any, callback
     const verifiedToken = jwt.verify(token, signingKey);
     
     // Generate policy document.
-    const policy = new Policy(event);
     const decodedToken = verifiedToken as DecodedTokenInterface;
+    const policy = new Policy(event);
+
+    policy.addAllowedResource("*");
 
     const policyDocument = policy.generate('Allow', {
       issuer: decodedToken.iss,
