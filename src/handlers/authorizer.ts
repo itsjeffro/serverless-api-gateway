@@ -1,8 +1,8 @@
 import jwt from 'jsonwebtoken';
 import LambdaEventInterface from "../lib/LambdaEvent/LambdaEventInterface";
 import Auth from "../lib/Auth";
-import Policy from "src/lib/Auth/Policy";
-import DecodedTokenInterface from 'src/lib/Jwt/DecodedTokenInterface';
+import Policy from "../lib/Auth/Policy";
+import DecodedTokenInterface from '../lib/Jwt/DecodedTokenInterface';
 
 module.exports.auth = async (event: LambdaEventInterface, context: any, callback: any) => {
   try {
