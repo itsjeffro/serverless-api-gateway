@@ -8,6 +8,7 @@ pipelines:
           script:
             - npm i
             - npm run test
+            - npm run build
             - rm -rf node_modules
             - npm i --production
           artifacts:
