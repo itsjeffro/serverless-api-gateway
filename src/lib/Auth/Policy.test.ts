@@ -3,7 +3,7 @@ import LambdaEventInterface from "../LambdaEvent/LambdaEventInterface";
 
 describe("Tests Policy", () => {
 
-  describe("Tests generater policy document", () => {
+  describe("Tests generated policy document", () => {
 
     test.each([
       [{}, {}],
@@ -13,10 +13,38 @@ describe("Tests Policy", () => {
         methodArn: 'arn:aws:execute-api:regionName:accountNumber:restApiId/stage/METHOD/resourcePath',
       };
     
-      const auth = new Policy(event);
-      const policy = auth.generate('allow', actual);
+      const policy = new Policy(event);
+      const policyDocument = policy.generate('allow', actual);
     
-      expect(policy.context).toMatchObject(expected);
+      expect(policyDocument.context).toMatchObject(expected);
+    });
+
+  });
+
+  describe("Tests resources", () => {
+
+    it('returns expected statement resources', () => {
+      const event: LambdaEventInterface = {
+        methodArn: 'arn:aws:execute-api:regionName:accountNumber:restApiId/stage/METHOD/resourcePath',
+      };
+    
+      const policy = new Policy(event);
+
+      policy.addAllowedResource("*");
+
+      const policyDocument = policy.generate('allow', {});
+
+      const expected = {
+        policyDocument: {
+          Statement: [
+            {
+              Resources: ["*"]
+            }
+          ]
+        }
+      };
+    
+      expect(policyDocument).toMatchObject(expected);
     });
 
   });
