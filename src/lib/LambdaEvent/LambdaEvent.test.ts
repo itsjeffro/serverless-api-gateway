@@ -1,14 +1,14 @@
-import Auth from "./index";
+import LambdaEvent from "./index";
 
 test('Throw Error if there is no Bearer match', () => {
   const event = {
     authorizationToken: "token"
   };
   
-  const auth = new Auth(event);
+  const lambdaEvent = new LambdaEvent(event);
 
   expect(() => {
-    auth.getToken();
+    lambdaEvent.getToken();
   }).toThrowError();
 });
 
@@ -19,9 +19,9 @@ test('Prepare methodArn segments', () => {
     authorizationToken: "token"
   };
 
-  const auth = new Auth(event);
+  const lambdaEvent = new LambdaEvent(event);
 
-  expect(auth.getMethodArnSegments()).toMatchObject({
+  expect(lambdaEvent.getMethodArnSegments()).toMatchObject({
     service: "arn:aws:execute-api",
     regionName: "regionName",
     accountNumber: "accountNumber",
@@ -37,11 +37,12 @@ test('Get methodArn with options', () => {
     methodArn: 'arn:aws:execute-api:regionName:accountNumber:restApiId/stage/METHOD/resourcePath',
   };
 
-  const auth = new Auth(event);
+  const lambdaEvent = new LambdaEvent(event);
+
   const options = {
     method: '*',
     resource: '*',
   }
 
-  expect(auth.getMethodArn(options)).toBe('arn:aws:execute-api:regionName:accountNumber:restApiId/stage/*/*');
+  expect(lambdaEvent.getMethodArn(options)).toBe('arn:aws:execute-api:regionName:accountNumber:restApiId/stage/*/*');
 });

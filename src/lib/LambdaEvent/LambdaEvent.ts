@@ -1,4 +1,4 @@
-import LambdaEventInteface from "../LambdaEvent/LambdaEventInterface";
+import LambdaEventInteface from "./LambdaEventInterface";
 
 class Auth {
   event: LambdaEventInteface;
@@ -50,8 +50,10 @@ class Auth {
       ...this.getMethodArnSegments(),
       ...options,
     };
+
+    let method = (arn.method || "").toUpperCase();
   
-    return `${arn.service}:${arn.regionName}:${arn.accountNumber}:${arn.restApiId}/${arn.stage}/*/${arn.resource}`;
+    return `${arn.service}:${arn.regionName}:${arn.accountNumber}:${arn.restApiId}/${arn.stage}/${method}/${arn.resource}`;
   }
 
   /**
