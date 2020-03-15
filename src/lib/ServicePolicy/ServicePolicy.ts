@@ -20,7 +20,7 @@ class ServicePolicy {
    * @param {string} serviceNameVersion
    * @returns {Promise<string>}
    */
-  async getByServiceNameVersion(serviceNameVersion: string): Promise<string> {
+  async getPolicyByServiceNameVersion(serviceNameVersion: string): Promise<[]> {
     const params = {
       TableName: this.tableName,
       ExpressionAttributeValues: {
@@ -38,7 +38,19 @@ class ServicePolicy {
 
     const item = dynamo.Items[0];
 
-    return item.policy.S;
+    let policy = item.policy.S;
+
+    if (policy === "") {
+      return [];
+    }
+
+    policy = JSON.parse(policy);
+
+    policy = Object.keys(policy).map((key) => {
+      return policy[key];
+    });
+
+    return policy;
   }
 }
 
