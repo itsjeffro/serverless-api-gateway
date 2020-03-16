@@ -12,6 +12,17 @@ provider:
 custom:
   apiGatewayName: ApiGateway-${self:provider.stage}
   apiGatewayaAuthorizerName: ClientAuthorizer-${self:provider.stage}
+
+package:
+  individually: false
+  excludeDevDependencies: true
+  include:
+    - dist/**
+    - config/**
+  exclude:
+    - ./**
+    - '!node_modules/**'
+    - 'node_modules/aws-sdk/**'
   
 functions:
   clientAuthorizer:
