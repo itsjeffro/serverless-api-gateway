@@ -15,9 +15,20 @@ provider:
 custom:
   apiGatewayName: ApiGateway-${self:provider.stage}
   apiGatewayaAuthorizerName: ClientAuthorizer-${self:provider.stage}
+  domain:
+    stages:
+      dev:
+        name: 'api-dev.itsjeffro.com'
+        basePath: ''
+        certificateName: '*.itsjeffro.com'
+      prod:
+        name: 'api.itsjeffro.com'
+        basePath: ''
+        certificateName: '*.itsjeffro.com'
   customDomain:
-    domainName: 'api.itsjeffro.com'
-    basePath: ''
+    domainName: ${self:custom.domain.stages.${self:provider.stage}.name}
+    basePath: ${self:custom.domain.stages.${self:provider.stage}.basePath}
+    certificateName: ${self:custom.domain.stages.${self:provider.stage}.certificateName}
     stage: ${self:provider.stage}
     createRoute53Record: true
 
