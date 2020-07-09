@@ -20,6 +20,7 @@ pipelines:
           script:
             - npm i serverless -g
             - serverless config credentials --provider aws --key $AWS_ACCESS_KEY_ID --secret $AWS_SECRET_ACCESS_KEY
+            - serverless create_domain --stage dev
             - serverless deploy --stage dev
 
       - step:
@@ -28,4 +29,5 @@ pipelines:
           script:
             - npm i serverless -g
             - serverless config credentials --provider aws --key $AWS_ACCESS_KEY_ID --secret $AWS_SECRET_ACCESS_KEY
+            - serverless create_domain --stage prod
             - serverless deploy --stage prod
