@@ -112,7 +112,7 @@ resources:
     InternalTenantsTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: internal_tenants
+        TableName: internal_tenants-${self:provider.stage}
         AttributeDefinitions:
           -
             AttributeName: tenant_name
@@ -131,7 +131,7 @@ resources:
     InternalServiceDocsTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: internal_service_docs
+        TableName: internal_service_docs-${self:provider.stage}
         AttributeDefinitions:
           -
             AttributeName: service_name_version
@@ -150,7 +150,7 @@ resources:
     InternalServicePoliciesTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: internal_service_policies
+        TableName: internal_service_policies-${self:provider.stage}
         AttributeDefinitions:
           -
             AttributeName: service_name_version
