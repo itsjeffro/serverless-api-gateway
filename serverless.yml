@@ -18,13 +18,13 @@ custom:
   domain:
     stages:
       dev:
-        name: 'api-dev.itsjeffro.com'
+        name: api-dev.itsjeffro.com
         basePath: ''
-        certificateName: 'itsjeffro.com'
+        certificateName: '*.itsjeffro.com'
       prod:
-        name: 'api.itsjeffro.com'
+        name: api.itsjeffro.com
         basePath: ''
-        certificateName: 'itsjeffro.com'
+        certificateName: '*.itsjeffro.com'
   customDomain:
     domainName: ${self:custom.domain.stages.${self:provider.stage}.name}
     basePath: ${self:custom.domain.stages.${self:provider.stage}.basePath}
