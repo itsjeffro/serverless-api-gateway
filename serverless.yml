@@ -30,6 +30,7 @@ custom:
     basePath: ${self:custom.domain.stages.${self:provider.stage}.basePath}
     certificateName: ${self:custom.domain.stages.${self:provider.stage}.certificateName}
     stage: ${self:provider.stage}
+    endpointType: 'regional'
     createRoute53Record: true
 
 package:
