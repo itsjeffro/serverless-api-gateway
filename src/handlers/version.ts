@@ -1,6 +1,7 @@
 module.exports.versionOne = async (event: any) => {
   const body = {
-    message: `You're viewing version 1 from stage [${ process.env.STAGE || '' }]`
+    environment: process.env.STAGE || '',
+    message: `You're viewing version 1`,
   };
 
   return {
