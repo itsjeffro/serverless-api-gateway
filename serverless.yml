@@ -11,7 +11,7 @@ provider:
   apiGateway:
     description: Reusable API gateway and authorizer
   environment:
-    JWT_SIGNING_KEY: ${env:JWT_SIGNING_KEY}
+    STAGE: ${self:provider.stage}
   
 custom:
   apiGatewayName: ApiGateway-${self:provider.stage}
@@ -51,6 +51,8 @@ functions:
   clientAuthorizer:
     handler: dist/handlers/authorizer.auth
     cors: true
+    environment:
+      JWT_SIGNING_KEY: ${env:JWT_SIGNING_KEY}
 
   versionOne:
     handler: dist/handlers/version.versionOne
