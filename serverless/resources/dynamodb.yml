@@ -1,0 +1,56 @@
+# Table: InternalTenantsTable
+# ===========================
+# - Stores tenant name and database mapping
+InternalTenantsTable:
+  Type: AWS::DynamoDB::Table
+  Properties:
+    TableName: internal_tenants-${self:provider.stage}
+    AttributeDefinitions:
+      -
+        AttributeName: tenant_name
+        AttributeType: S
+    KeySchema:
+      -
+        AttributeName: tenant_name
+        KeyType: HASH
+    ProvisionedThroughput:
+      ReadCapacityUnits: 1
+      WriteCapacityUnits: 1
+        
+# Table: InternalServiceDocsTable
+# ===============================
+# - Stores service documentation
+InternalServiceDocsTable:
+  Type: AWS::DynamoDB::Table
+  Properties:
+    TableName: internal_service_docs-${self:provider.stage}
+    AttributeDefinitions:
+      -
+        AttributeName: service_name_version
+        AttributeType: S
+    KeySchema:
+      -
+        AttributeName: service_name_version
+        KeyType: HASH
+    ProvisionedThroughput:
+      ReadCapacityUnits: 1
+      WriteCapacityUnits: 1
+        
+# Table: InternalServicePoliciesTable
+# ===============================
+# - Stores service policies
+InternalServicePoliciesTable:
+  Type: AWS::DynamoDB::Table
+  Properties:
+    TableName: internal_service_policies-${self:provider.stage}
+    AttributeDefinitions:
+      -
+        AttributeName: service_name_version
+        AttributeType: S
+    KeySchema:
+      -
+        AttributeName: service_name_version
+        KeyType: HASH
+    ProvisionedThroughput:
+      ReadCapacityUnits: 1
+      WriteCapacityUnits: 1

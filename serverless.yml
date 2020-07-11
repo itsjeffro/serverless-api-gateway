@@ -1,6 +1,7 @@
 service: api-gateway
 
 plugins:
+  - serverless-dotenv-plugin
   - serverless-domain-manager
 
 provider:
@@ -44,6 +45,7 @@ package:
     - '!node_modules/**'
     - 'node_modules/aws-sdk/**'
     - 'node_modules/serverless-domain-manager/**'
+    - 'node_modules/serverless-dotenv-plugin/**'
 
 functions:
   clientAuthorizer:
@@ -60,108 +62,21 @@ functions:
 
 resources:
   Resources:
-    
-    # API gateway authorizer
-    # - Our reusable authorizer which we will attach to our API gateway. We will reference the API gateway using the key/name from the "ApiGateway" resource above.
-    # - The lambda is reference by key/name under functions. For example "clientAuthorizer" becomes "ClientAuthorizerLambdaFunction.Arn".
+
     ApiGatewayAuthorizer:
-      Type: AWS::ApiGateway::Authorizer
-      Properties:
-        AuthorizerUri:
-          Fn::Join:
-            - ''
-            -
-              - 'arn:aws:apigateway:'
-              - Ref: "AWS::Region"
-              - ':lambda:path/2015-03-31/functions/'
-              - Fn::GetAtt: "ClientAuthorizerLambdaFunction.Arn"
-              - "/invocations"
-        IdentitySource: method.request.header.Authorization
-        IdentityValidationExpression: "Bearer .+"
-        Name: ${self:custom.apiGatewayaAuthorizerName}
-        AuthorizerResultTtlInSeconds: '0'
-        RestApiId: { Ref: ApiGatewayRestApi }
-        Type: TOKEN
+      ${file(serverless/resources/authorizer.yml):ApiGatewayAuthorizer}
 
     ApiGatewayAuthorizerPermission:
-      Type: AWS::Lambda::Permission
-      Properties:
-        Action: lambda:InvokeFunction
-        FunctionName:
-          Fn::GetAtt: ClientAuthorizerLambdaFunction.Arn
-        Principal: "apigateway.amazonaws.com"
-        SourceArn: {
-            Fn::Join : [
-              "",
-              [
-                "arn:aws:execute-api:",
-                { Ref: "AWS::Region" },
-                ":",
-                { Ref: "AWS::AccountId" },
-                ":",
-                { Ref: ApiGatewayRestApi },
-                "/authorizers/",
-                { Ref: ApiGatewayAuthorizer }
-              ]
-            ]
-          }
+      ${file(serverless/resources/authorizer.yml):ApiGatewayAuthorizerPermission}
 
-    # Table: InternalTenantsTable
-    # ===========================
-    # - Stores tenant name and database mapping
     InternalTenantsTable:
-      Type: AWS::DynamoDB::Table
-      Properties:
-        TableName: internal_tenants-${self:provider.stage}
-        AttributeDefinitions:
-          -
-            AttributeName: tenant_name
-            AttributeType: S
-        KeySchema:
-          -
-            AttributeName: tenant_name
-            KeyType: HASH
-        ProvisionedThroughput:
-          ReadCapacityUnits: 1
-          WriteCapacityUnits: 1
+      ${file(serverless/resources/dynamodb.yml):InternalTenantsTable}
             
-    # Table: InternalServiceDocsTable
-    # ===============================
-    # - Stores service documentation
     InternalServiceDocsTable:
-      Type: AWS::DynamoDB::Table
-      Properties:
-        TableName: internal_service_docs-${self:provider.stage}
-        AttributeDefinitions:
-          -
-            AttributeName: service_name_version
-            AttributeType: S
-        KeySchema:
-          -
-            AttributeName: service_name_version
-            KeyType: HASH
-        ProvisionedThroughput:
-          ReadCapacityUnits: 1
-          WriteCapacityUnits: 1
+      ${file(serverless/resources/dynamodb.yml):InternalServiceDocsTable}
             
-    # Table: InternalServicePoliciesTable
-    # ===============================
-    # - Stores service policies
     InternalServicePoliciesTable:
-      Type: AWS::DynamoDB::Table
-      Properties:
-        TableName: internal_service_policies-${self:provider.stage}
-        AttributeDefinitions:
-          -
-            AttributeName: service_name_version
-            AttributeType: S
-        KeySchema:
-          -
-            AttributeName: service_name_version
-            KeyType: HASH
-        ProvisionedThroughput:
-          ReadCapacityUnits: 1
-          WriteCapacityUnits: 1
+      ${file(serverless/resources/dynamodb.yml):InternalServicePoliciesTable}
             
   Outputs:
 
