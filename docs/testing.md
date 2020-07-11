@@ -6,6 +6,12 @@
 npm run test
 ```
 
+For coverage reports, run `npm run test:coverage`. This is will be generated in the `coverage` directory.
+
+```bash
+npm run test:coverage
+```
+
 ### Serverless invoke function
 
 ```bash
