@@ -30,7 +30,7 @@ rm -rf node_modules
 npm i --production
 ```
 
-You may then run the follow commands below.
+You may now deploy your serverless project.
 
 ```bash
 serverless create_domain --stage <dev|prod>
