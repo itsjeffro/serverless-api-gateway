@@ -5,8 +5,6 @@ pipelines:
     master:
       - step:
           name: Test and build
-          caches:
-            - node
           script:
             - npm i
             - npm run test
