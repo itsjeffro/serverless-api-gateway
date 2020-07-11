@@ -5,12 +5,15 @@ pipelines:
     master:
       - step:
           name: Test and build
+          caches:
+            - node
           script:
             - npm i
             - npm run test
             - npm run build
             - rm -rf node_modules
             - npm i --production
+            - npm i serverless -g
           artifacts:
             - dist/**
             - node_modules/**
@@ -18,7 +21,6 @@ pipelines:
       - step:
           name: Deploy to staging
           script:
-            - npm i serverless -g
             - serverless config credentials --provider aws --key $AWS_ACCESS_KEY_ID --secret $AWS_SECRET_ACCESS_KEY
             - serverless create_domain --stage dev
             - serverless deploy --stage dev
@@ -27,7 +29,6 @@ pipelines:
           name: Deploy to production
           trigger: manual
           script:
-            - npm i serverless -g
             - serverless config credentials --provider aws --key $AWS_ACCESS_KEY_ID --secret $AWS_SECRET_ACCESS_KEY
             - serverless create_domain --stage prod
             - serverless deploy --stage prod
