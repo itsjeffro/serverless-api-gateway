@@ -1,77 +1,35 @@
 # Microservice API Gateway
 
-## Deployment
+The following AWS services are used:
 
-A Bitbucket pipelines YML file is included to handle the creation of the API gateway and API gateway authozier during deployment.
+- API Gateway
+- API Gateway custom domain names
+- Route53
+- Lambda
+- DynamoDB
 
-Lambda and API gateway resources will be created.
+## Getting started
 
-### Development (dev)
+See [Getting started](docs/getting-started.md) for more information.
 
-- Lambda - `api-gateway-dev-clientAuthorizer`
-- API gateway - `ApiGateway-dev`
+## Resources
 
-### Production (prod)
+### API Gateway
 
-- Lambda - `api-gateway-prod-clientAuthorizer`
-- API gateway - `ApiGateway-prod`
+- `<stage>-api-gateway`
 
-## Usage
+### API Gateway custom domain names
 
-Below are examples to reference the API gateway and API gateway authorizer in independent serverless setups.
+- `api.itsjeffro.com`
+- `api-dev.itsjeffro.com`
 
-### API gateway
+### DynamoDB
 
-```yml
-# serverless.yml
+- `internal_service_docs-<stage>`
+- `internal_service_policies-<stage>`
+- `internal_tenants-<stage>`
 
-provider:
-  name: aws
-  stage: ${opt:stage, 'dev'}
-  apiGateway: 
-    restApiId: 
-      'Fn::ImportValue': ApiGateway-${self:provider.stage}-restApiId
-    restApiRootResourceId: 
-      'Fn::ImportValue': ApiGateway-${self:provider.stage}-rootResourceId
-```
+### Lambda
 
-### API gateway authorizer
-
-```yml
-# serverless.yml
-
-functions:
-  hello:
-    handler: handler.hello
-    events:
-      - http:
-          path: hello
-          method: get
-          cors: true
-          authorizer:
-            type: CUSTOM
-            authorizerId: ${cf:api-gateway-dev.apiGatewayRestApiAuthorizer}
-```
-
-## Testing
-
-### Jest
-
-```
-npm run test
-```
-
-### Serverless invoke function
-
-```
-serverless invoke local --function clientAuthorizer --data '{"authorizationToken":"<jwt-token>", "methodArn": "arn:aws:execute-api:regionName:accountNumber:restApiId/stage/METHOD/resourcePath"}' -e JWT_SIGNING_KEY=<jwt-signing-key>
-```
-
-```
-serverless invoke local --function versionOne
-```
-
-## Additional information
-
-- https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/intrinsic-function-reference-importvalue.html
-- https://theburningmonk.com/cloudformation-ref-and-getatt-cheatsheet/
+- `api-gateway-<stage>-clientAuthorizer`
+- `api-gateway-<stage>-versionOne`
