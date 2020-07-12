@@ -60,7 +60,7 @@ class Authorizer implements HandleInterface {
    * Returns retrieved tenant from DynamoDB.
    */
   async getTenant(tenantName: string): Promise<any> {
-    this.logger.log("Retrieving tenant from DynamoDB...");
+    this.logger.log(`Retrieving tenant [${tenantName}] from DynamoDB...`);
     
     const tenant = await this.tenantRepository.getOneByTenantName(tenantName);
 
@@ -68,7 +68,7 @@ class Authorizer implements HandleInterface {
       throw new Error(`Tenant [${tenantName}] could not be found.`);
     }
 
-    this.logger.log("Retrieved tenant.");
+    this.logger.log(`Retrieved tenant [${tenant.tenant_name}].`);
 
     return tenant;
   }
