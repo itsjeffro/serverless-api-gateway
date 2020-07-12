@@ -7,7 +7,7 @@ import PolicyDocument from "../lib/PolicyDocument";
 import ServicePolicyRepository from '../repository/ServicePolicyRepository';
 import Logger from '../lib/Logger';
 import Authorizer from '../services/Authorizer';
-import TenantRepository from 'src/repository/TenantRepository';
+import TenantRepository from '../repository/TenantRepository';
 
 let dynamoDb = new AWS.DynamoDB({ region: "ap-southeast-2" });
 
