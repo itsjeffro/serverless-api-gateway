@@ -44,6 +44,6 @@ module.exports.auth = async (event: LambdaEventInterface, context: any, callback
       return callback("Unauthorized");
     }
 
-    return callback("Error: Invalid token");
+    return callback(`Error: ${ e.message }`);
   }
 }
