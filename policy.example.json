@@ -1,0 +1,22 @@
+{
+  "posts.list": {
+    "method": "get",
+    "resource": "v1/posts"
+  },
+  "posts.create": {
+    "method": "post",
+    "resource": "v1/posts"
+  },
+  "posts.read": {
+    "method": "get",
+    "resource": "v1/posts/*"
+  },
+  "posts.update": {
+    "method": "put",
+    "resource": "v1/posts/*"
+  },
+  "posts.delete": {
+    "method": "delete",
+    "resource": "v1/posts/*"
+  }
+}
