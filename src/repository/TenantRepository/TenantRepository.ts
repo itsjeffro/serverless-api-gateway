@@ -20,11 +20,11 @@ class TenantRepository {
     const params = {
       TableName: this.getTable(),
       ExpressionAttributeValues: {
-        ':tenant_name': {
+        ':tenantName': {
           S: tenantName
         }
       },
-      KeyConditionExpression: 'tenant_name = :tenant_name',
+      KeyConditionExpression: 'tenant_name = :tenantName',
       Limit: 1
     };
 
