@@ -1,75 +1,78 @@
 import LambdaEventInterface from "../LambdaEvent/LambdaEventInterface";
 
 interface PolicyDocument {
-  context: object;
+  principalId: string;
+  context?: object;
 }
 
 interface Resources {
   allowed: string[];
+  denied: string[];
 }
 
 class Policy {
-  event: LambdaEventInterface;
-  principalId: string;
+  lambdaEvent: any;
   resources: Resources = {
-    allowed: []
+    allowed: [],
+    denied: [],
   };
+  context: object = {};
 
-  /**
-   * Policy constructor.
-   *
-   * @param {LambdaEventInterface} event
-   * @param {string} principalId
-   */
-  constructor(event: LambdaEventInterface, principalId: string) {
-    this.event = event;
-    this.principalId = principalId;
+  constructor(lambdaEvent: any) {
+    this.lambdaEvent = lambdaEvent;
   }
 
-  /**
-   * Add resource to allowed list.
-   *
-   * @param {string} resource
-   * @returns {void}
-   */
-  addAllowedResource(resource: string): void {
-    this.resources.allowed.push(resource);
+  setContext(context: object) {
+    this.context = context;
+
+    return this;
   }
 
-  /**
-   * Returns all allowed resources.
-   * 
-   * @returns {string[]}
-   */
-  getAllowedResources(): string[] {
-    return this.resources.allowed;
-  }
+  generate(availablePolicies: any, permissions?: string[]): PolicyDocument {
+    let allowed = [];
+    let denied = [];
+    let permissionList = permissions || [];
 
-  /**
-   * Returns policy.
-   *
-   * @param {string} effect
-   * @param {object} context
-   * @returns {PolicyDocument}
-   */
-  generate(effect: string, context: object): PolicyDocument {
+    const policies = Object.keys(availablePolicies);
+
+    for (let i = 0; i < policies.length; i++) {
+      const key = policies[i];
+
+      let methodArn = this.lambdaEvent.getMethodArn({ 
+        method: availablePolicies[key].method,
+        resource: availablePolicies[key].resource,
+      });
+
+      if (permissionList.indexOf(key) !== -1) {
+        allowed.push(methodArn);
+      } else {
+        denied.push(methodArn);
+      }
+    }
+    
     let policy = {
-      principalId: this.principalId,
+      principalId: '',
       policyDocument: {
         Version: "2012-10-17",
         Statement: [
           {
             Action: "execute-api:Invoke",
-            Effect: effect,
-            Resource: this.getAllowedResources(),
+            Effect: 'Allow',
+            Resource: allowed,
+          }, 
+          {
+            Action: "execute-api:Invoke",
+            Effect: 'Deny',
+            Resource: denied,
           }
         ]
-      },
-      context: {},
+      }
     };
 
-    if (context) {
-      policy.context = context;
+    if (this.context) {
+      policy = {
+        ...policy,
+      };
     }
 
     return policy;
