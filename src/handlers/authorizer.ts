@@ -22,7 +22,7 @@ module.exports.auth = async (event: LambdaEventInterface, context: any, callback
     .setHeader('resource', arnSegments.resource);
   
   try {
-    const policyDocument = new PolicyDocument(event);
+    const policyDocument = new PolicyDocument(lambdaEvent);
     const servicePolicyRepository = new ServicePolicyRepository(dynamoDb, stage);
     const tenantRepository = new TenantRepository(dynamoDb, stage);
 

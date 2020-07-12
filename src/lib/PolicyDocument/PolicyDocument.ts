@@ -1,4 +1,4 @@
-import LambdaEventInterface from "../LambdaEvent/LambdaEventInterface";
+import LambdaEvent from "../LambdaEvent";
 
 interface PolicyDocument {
   principalId: string;
@@ -11,14 +11,14 @@ interface Resources {
 }
 
 class Policy {
-  lambdaEvent: any;
+  lambdaEvent: LambdaEvent;
   resources: Resources = {
     allowed: [],
     denied: [],
   };
   context: object = {};
 
-  constructor(lambdaEvent: any) {
+  constructor(lambdaEvent: LambdaEvent) {
     this.lambdaEvent = lambdaEvent;
   }
 
