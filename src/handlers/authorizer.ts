@@ -1,66 +1,46 @@
-import jwt from 'jsonwebtoken';
+import jwt, { JsonWebTokenError } from 'jsonwebtoken';
 import AWS from "aws-sdk";
 
 import LambdaEventInterface from "../lib/LambdaEvent/LambdaEventInterface";
 import LambdaEvent from "../lib/LambdaEvent";
 import PolicyDocument from "../lib/PolicyDocument";
-import DecodedTokenInterface from '../lib/Jwt/DecodedTokenInterface';
-import ServicePolicy from '../lib/ServicePolicy/ServicePolicy';
+import ServicePolicyRepository from '../repository/ServicePolicyRepository';
+import Logger from '../lib/Logger';
+import Authorizer from '../services/Authorizer';
+import TenantRepository from 'src/repository/TenantRepository';
 
 let dynamoDb = new AWS.DynamoDB({ region: "ap-southeast-2" });
 
 module.exports.auth = async (event: LambdaEventInterface, context: any, callback: any) => {
+  const logger = new Logger(console);
+  const lambdaEvent = new LambdaEvent(event);
+  const arnSegments = lambdaEvent.getMethodArnSegments();
+  const stage = process.env.STAGE || "";
+
+  logger
+    .setHeader('stage', stage)
+    .setHeader('resource', arnSegments.resource);
+  
   try {
-    // Retrieve token from lambda event.
-    console.log("Getting token...");
+    const policyDocument = new PolicyDocument(event);
+    const servicePolicyRepository = new ServicePolicyRepository(dynamoDb, stage);
+    const tenantRepository = new TenantRepository(dynamoDb, stage);
 
-    const lambdaEvent = new LambdaEvent(event);
-    const token = lambdaEvent.getToken();
+    const authorizer = new Authorizer(
+      jwt,
+      logger,
+      policyDocument,
+      servicePolicyRepository,
+      tenantRepository
+    );
 
-    console.log("Retrieved token.");
-
-    // Verify token and returns decoded token.
-    console.log("Verifying token...");
-
-    const signingKey = process.env.JWT_SIGNING_KEY || "";
-    const verifiedToken = jwt.verify(token, signingKey);
-
-    console.log("Verified token.");
-
-    // Retrieving service policy from dynamoDB.
-    console.log("Retrieving policy...");
-
-    const servicePolicy = new ServicePolicy(dynamoDb, "internal_service_policies");
-    const servicePolicyMethods: any = await servicePolicy.getPolicyByServiceNameVersion("posts-v1");
+    const response = await authorizer.handle(lambdaEvent);
     
-    // Generate policy document.
-    console.log("Generating policy document...");
-
-    const decodedToken = verifiedToken as DecodedTokenInterface;
-    const policy = new PolicyDocument(event, decodedToken.sub);
-
-    for (let i = 0; i < servicePolicyMethods.length; i++) {
-      let methodArn = lambdaEvent.getMethodArn({ 
-        method: servicePolicyMethods[i].method,
-        resource: servicePolicyMethods[i].resource
-      });
-
-      policy.addAllowedResource(methodArn);
-    }
-
-    const policyDocument = policy.generate('Allow', {
-      issuer: decodedToken.iss,
-      user: decodedToken.sub,
-      company: decodedToken.company
-    });
-
-    console.log(`Generated policy document: ${JSON.stringify(policyDocument)}`);
-    
-    return callback(null, policyDocument);
+    return callback(null, response);
   } catch (e) {
-    console.error(e);
+    logger.error({ name: e.name, message: e.message });
    
-    if (e.name === "JsonWebTokenError") {
+    if (e instanceof JsonWebTokenError) {
       return callback("Unauthorized");
     }
 
