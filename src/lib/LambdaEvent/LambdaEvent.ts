@@ -1,11 +1,9 @@
 import LambdaEventInteface from "./LambdaEventInterface";
 
-class Auth {
+class LambdaEvent {
   event: LambdaEventInteface;
 
   /**
-   * Auth constructor.
-   *
    * @param {LambdaEventInteface} event
    */
   constructor(event: LambdaEventInteface) {
@@ -73,4 +71,4 @@ class Auth {
   }
 }
 
-export default Auth;
+export default LambdaEvent;
