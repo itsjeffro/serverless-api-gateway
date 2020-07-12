@@ -33,8 +33,10 @@ class Authorizer implements HandleInterface {
     const verifiedToken = this.verifyToken(lambdaEvent.getToken());
     
     const tenant = await this.getTenant(verifiedToken.company);
+
+    const serviceName = this.getServiceName(lambdaEvent);
     
-    const availablePolicies = await this.getServicePolicy();
+    const availablePolicies = await this.getServicePolicy(serviceName);
     
     const permissions = verifiedToken.permissions || [];
 
@@ -74,12 +76,41 @@ class Authorizer implements HandleInterface {
   }
 
   /**
+   * Returns service name determined by method arn resource.
+   */
+  getServiceName(lambdaEvent: LambdaEvent): string {
+    this.logger.log(`Determining service name...`);
+
+    const methodArn = lambdaEvent.getMethodArnSegments();
+
+    const resource = methodArn.resource;
+    const resourceSegments = resource.split('/');
+
+    const versionCheck = /v[0-9]/g;
+
+    let serviceName = resourceSegments[0];
+
+    if (versionCheck.test(resourceSegments[0])) {
+      const version = resourceSegments[0];
+      const service = resourceSegments[1];
+
+      serviceName = `${service}-${version}`;
+    }
+
+    this.logger.log(`Determined service name as [${ serviceName }]...`);
+
+    return serviceName;
+  }
+
+  /**
    * Returns retrieved service policy from DynamoDB.
    */
-  async getServicePolicy(): Promise<any> {
+  async getServicePolicy(serviceName: string): Promise<any> {
     this.logger.log("Retrieving policy from DynamoDB...");
 
-    const availablePolicies = await this.servicePolicyRepository.getPolicyByServiceNameVersion("posts-v1");
+    const availablePolicies = await this
+      .servicePolicyRepository
+      .getPolicyByServiceNameVersion(serviceName);
 
     this.logger.log("Retrieved policy.");
 
@@ -93,7 +124,10 @@ class Authorizer implements HandleInterface {
     this.logger.log("Preparing to generate document...");
 
     const policyDocument = this.policyDocument
-      .setContext({ database: tenant.database })
+      .setContext({
+        tenant: tenant.name,
+        database: tenant.database,
+      })
       .generate(availablePolicies, permissions);
 
     this.logger.log(`Generated policy document: ${JSON.stringify(policyDocument)}`);
