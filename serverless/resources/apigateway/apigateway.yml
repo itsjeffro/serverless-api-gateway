@@ -1,24 +1,25 @@
-output:
-  # API gateway
-  apiGatewayRestApiId:
-    Value:
-      Ref: ApiGatewayRestApi 
-    Export:
-      Name: ${self:custom.apiGatewayName}-restApiId
-      
-  apiGatewayRestApiRootResourceId: 
-    Value:
-      Fn::GetAtt:
-        - ApiGatewayRestApi 
-        - RootResourceId 
-    Export:
-      Name: ${self:custom.apiGatewayName}-rootResourceId
+resources:
+  Outputs:
+    # API gateway
+    apiGatewayRestApiId:
+      Value:
+        Ref: ApiGatewayRestApi 
+      Export:
+        Name: ${self:custom.apiGatewayName}-restApiId
+        
+    apiGatewayRestApiRootResourceId: 
+      Value:
+        Fn::GetAtt:
+          - ApiGatewayRestApi 
+          - RootResourceId 
+      Export:
+        Name: ${self:custom.apiGatewayName}-rootResourceId
 
-  # API gateway resources (versions)
-  # - The ref is a combination of "ApiGatewayResource" and "path" with the first letter being capital.
-  # - For example, ApiGatewayResource{NormalizedPath - v1} for the authorizer would be "ApiGatewayResourceV1"
-  apiGatewayRestApiVersionOneResourceId:
-    Value:
-      Ref: ApiGatewayResourceV1
-    Export:
-      Name: ${self:custom.apiGatewayName}-versionOneResourceId
+    # API gateway resources (versions)
+    # - The ref is a combination of "ApiGatewayResource" and "path" with the first letter being capital.
+    # - For example, ApiGatewayResource{NormalizedPath - v1} for the authorizer would be "ApiGatewayResourceV1"
+    apiGatewayRestApiVersionOneResourceId:
+      Value:
+        Ref: ApiGatewayResourceV1
+      Export:
+        Name: ${self:custom.apiGatewayName}-versionOneResourceId

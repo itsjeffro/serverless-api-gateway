@@ -63,36 +63,15 @@ functions:
           cors: true
 
 resources:
-  Resources:
-    # Authorizer (jwt)
-    ApiGatewayAuthorizer:
-      ${file(serverless/resources/authorizer/jwt-authorizer.yml):resource.ApiGatewayAuthorizer}
+  # authorizer
+  - ${file(serverless/resources/authorizer/jwt-authorizer.yml):resources}
 
-    ApiGatewayAuthorizerPermission:
-      ${file(serverless/resources/authorizer/jwt-authorizer.yml):resource.ApiGatewayAuthorizerPermission}
-
-    # DynamoDB tables
-    InternalTenantsTable:
-      ${file(serverless/resources/dynamodb/tenants.yml):resource.InternalTenantsTable}
-
-    InternalServiceDocsTable:      
-      ${file(serverless/resources/dynamodb/service-docs.yml):resource.InternalServiceDocsTable}
-          
-    InternalServicePoliciesTable:
-      ${file(serverless/resources/dynamodb/service-policies.yml):resource.InternalServicePoliciesTable}
+  # dynamodb tables
+  - ${file(serverless/resources/dynamodb/tenants.yml):resources}
+  
+  - ${file(serverless/resources/dynamodb/service-docs.yml):resources}
             
-  Outputs:
-    # API gateway
-    apiGatewayRestApiId:
-      ${file(serverless/resources/apigateway/apigateway.yml):output.apiGatewayRestApiId}
-       
-    apiGatewayRestApiRootResourceId: 
-      ${file(serverless/resources/apigateway/apigateway.yml):output.apiGatewayRestApiRootResourceId}
+  - ${file(serverless/resources/dynamodb/service-policies.yml):resources}
 
-    # API gateway resources (versions)
-    apiGatewayRestApiVersionOneResourceId:
-      ${file(serverless/resources/apigateway/apigateway.yml):output.apiGatewayRestApiVersionOneResourceId}
-
-    # API gateway authorizer
-    apiGatewayRestApiAuthorizer:
-      ${file(serverless/resources/authorizer/jwt-authorizer.yml):output.apiGatewayRestApiAuthorizer}
+  # api gateway
+  - ${file(serverless/resources/apigateway/apigateway.yml):resources}
