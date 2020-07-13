@@ -1,0 +1,19 @@
+# Table: InternalTenantsTable
+# ===========================
+# - Stores tenant name and database mapping
+resource:
+  InternalTenantsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: internal_tenants-${self:provider.stage}
+      AttributeDefinitions:
+        -
+          AttributeName: tenant_name
+          AttributeType: S
+      KeySchema:
+        -
+          AttributeName: tenant_name
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5

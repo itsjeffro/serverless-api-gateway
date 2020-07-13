@@ -1,0 +1,19 @@
+# Table: InternalServiceDocsTable
+# ===============================
+# - Stores service documentation
+resource:
+  InternalServiceDocsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: internal_service_docs-${self:provider.stage}
+      AttributeDefinitions:
+        -
+          AttributeName: service_name_version
+          AttributeType: S
+      KeySchema:
+        -
+          AttributeName: service_name_version
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
