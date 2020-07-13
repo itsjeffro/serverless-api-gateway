@@ -64,51 +64,35 @@ functions:
 
 resources:
   Resources:
-
+    # Authorizer (jwt)
     ApiGatewayAuthorizer:
-      ${file(serverless/resources/authorizer.yml):ApiGatewayAuthorizer}
+      ${file(serverless/resources/authorizer/jwt-authorizer.yml):resource.ApiGatewayAuthorizer}
 
     ApiGatewayAuthorizerPermission:
-      ${file(serverless/resources/authorizer.yml):ApiGatewayAuthorizerPermission}
+      ${file(serverless/resources/authorizer/jwt-authorizer.yml):resource.ApiGatewayAuthorizerPermission}
 
+    # DynamoDB tables
     InternalTenantsTable:
-      ${file(serverless/resources/dynamodb.yml):InternalTenantsTable}
-            
-    InternalServiceDocsTable:
-      ${file(serverless/resources/dynamodb.yml):InternalServiceDocsTable}
-            
+      ${file(serverless/resources/dynamodb/tenants.yml):resource.InternalTenantsTable}
+
+    InternalServiceDocsTable:      
+      ${file(serverless/resources/dynamodb/service-docs.yml):resource.InternalServiceDocsTable}
+          
     InternalServicePoliciesTable:
-      ${file(serverless/resources/dynamodb.yml):InternalServicePoliciesTable}
+      ${file(serverless/resources/dynamodb/service-policies.yml):resource.InternalServicePoliciesTable}
             
   Outputs:
-
-    # API gateway outputs
+    # API gateway
     apiGatewayRestApiId:
-      Value:
-        Ref: ApiGatewayRestApi 
-      Export:
-        Name: ${self:custom.apiGatewayName}-restApiId 
+      ${file(serverless/resources/apigateway/apigateway.yml):output.apiGatewayRestApiId}
        
     apiGatewayRestApiRootResourceId: 
-      Value:
-        Fn::GetAtt:
-          - ApiGatewayRestApi 
-          - RootResourceId 
-      Export:
-        Name: ${self:custom.apiGatewayName}-rootResourceId
+      ${file(serverless/resources/apigateway/apigateway.yml):output.apiGatewayRestApiRootResourceId}
 
-    # API gateway resources
-    # - The ref is a combination of "ApiGatewayResource" and "path" with the first letter being capital.
-    # - For example, ApiGatewayResource{NormalizedPath - v1} for the authorizer would be "ApiGatewayResourceV1"
+    # API gateway resources (versions)
     apiGatewayRestApiVersionOneResourceId:
-      Value:
-        Ref: ApiGatewayResourceV1
-      Export:
-        Name: ${self:custom.apiGatewayName}-versionOneResourceId
+      ${file(serverless/resources/apigateway/apigateway.yml):output.apiGatewayRestApiVersionOneResourceId}
 
-    # API gateway authorizer outputs
+    # API gateway authorizer
     apiGatewayRestApiAuthorizer:
-      Value:
-        Ref: ApiGatewayAuthorizer
-      Export:
-        Name: ${self:custom.apiGatewayName}-authorizer
+      ${file(serverless/resources/authorizer/jwt-authorizer.yml):output.apiGatewayRestApiAuthorizer}
