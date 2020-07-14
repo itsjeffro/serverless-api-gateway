@@ -89,6 +89,36 @@ describe("Tests PolicyDocument", () => {
       expect(document).toMatchObject(expected);
     });
 
+    it("returns context when provided", async () => {
+      const event: LambdaEventInterface = {
+        methodArn: 'arn:aws:execute-api:regionName:accountNumber:restApiId/stage/METHOD/resourcePath',
+      };
+      
+      const availablePolicies = {};
+      
+      const policyDocument = new PolicyDocument(new LambdaEvent(event));
+      
+      const document = policyDocument.setContext({
+          tenant: "name",
+          database: "tenant",
+        })
+        .generate(availablePolicies);
+
+      const expected = {
+        principalId: '',
+        policyDocument: {
+          Version: "2012-10-17",
+          Statement: []
+        },
+        context: {
+          tenant: "name",
+          database: "tenant",
+        }
+      };
+
+      expect(document).toMatchObject(expected);
+    })
+
   });
 
 });
