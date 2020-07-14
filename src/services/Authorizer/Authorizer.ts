@@ -32,7 +32,7 @@ class Authorizer implements HandleInterface {
   async handle(lambdaEvent: LambdaEvent) {
     const verifiedToken = this.verifyToken(lambdaEvent.getToken());
     
-    const tenant = await this.getTenant(verifiedToken.company);
+    const tenant = await this.getTenant(verifiedToken.tenant);
 
     const serviceName = this.getServiceName(lambdaEvent);
     
