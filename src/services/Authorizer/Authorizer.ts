@@ -53,7 +53,7 @@ class Authorizer implements HandleInterface {
 
     const verifiedToken = this.jwt.verify(token, signingKey);
 
-    this.logger.log("Verified token.");
+    this.logger.log("Verified token");
 
     return verifiedToken;
   }
@@ -70,7 +70,7 @@ class Authorizer implements HandleInterface {
       throw new Error(`Tenant [${tenantName}] could not be found.`);
     }
 
-    this.logger.log(`Retrieved tenant [${tenant.tenant_name}].`);
+    this.logger.log(`Retrieved tenant [${tenant.tenant_name}]`);
 
     return tenant;
   }
@@ -97,7 +97,7 @@ class Authorizer implements HandleInterface {
       serviceName = `${service}-${version}`;
     }
 
-    this.logger.log(`Determined service name as [${ serviceName }]...`);
+    this.logger.log(`Determined service name as [${ serviceName }]`);
 
     return serviceName;
   }
@@ -124,11 +124,13 @@ class Authorizer implements HandleInterface {
     this.logger.log("Preparing to generate document...");
 
     const policyDocument = this.policyDocument
+      .setAvailablePolicies(availablePolicies)
+      .setPermissions(permissions)
       .setContext({
         tenant: tenant.name || null,
         database: tenant.database || null,
       })
-      .generate(availablePolicies, permissions);
+      .generate();
 
     this.logger.log(`Generated policy document: ${JSON.stringify(policyDocument)}`);
 
