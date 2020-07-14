@@ -112,7 +112,7 @@ class Authorizer implements HandleInterface {
       .servicePolicyRepository
       .getPolicyByServiceNameVersion(serviceName);
 
-    this.logger.log("Retrieved policy.");
+    this.logger.log(`Retrieved policies: ${ JSON.stringify(availablePolicies) }`);
 
     return availablePolicies;
   }
@@ -125,8 +125,8 @@ class Authorizer implements HandleInterface {
 
     const policyDocument = this.policyDocument
       .setContext({
-        tenant: tenant.name,
-        database: tenant.database,
+        tenant: tenant.name || null,
+        database: tenant.database || null,
       })
       .generate(availablePolicies, permissions);
 
