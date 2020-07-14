@@ -2,6 +2,10 @@ import LambdaEvent from "../LambdaEvent";
 
 interface PolicyDocument {
   principalId: string;
+  policyDocument: {
+    Version: string;
+    Statement: any[];
+  }
   context?: object;
 }
 
@@ -22,7 +26,7 @@ class Policy {
     this.lambdaEvent = lambdaEvent;
   }
 
-  setContext(context: object) {
+  setContext(context: object): this {
     this.context = context;
 
     return this;
@@ -49,29 +53,37 @@ class Policy {
         denied.push(methodArn);
       }
     }
-    
-    let policy = {
+
+    let statement: any[] = [];
+
+    if (allowed.length > 0) {
+      statement.push({
+        Action: "execute-api:Invoke",
+        Effect: 'Allow',
+        Resource: allowed,
+      });
+    }
+
+    if (denied.length > 0) {
+      statement.push({
+        Action: "execute-api:Invoke",
+        Effect: 'Deny',
+        Resource: denied,
+      });
+    }
+
+    let policy: PolicyDocument = {
       principalId: '',
       policyDocument: {
         Version: "2012-10-17",
-        Statement: [
-          {
-            Action: "execute-api:Invoke",
-            Effect: 'Allow',
-            Resource: allowed,
-          }, 
-          {
-            Action: "execute-api:Invoke",
-            Effect: 'Deny',
-            Resource: denied,
-          }
-        ]
+        Statement: statement,
       }
     };
 
     if (this.context) {
       policy = {
         ...policy,
+        context: this.context,
       };
     }
 
