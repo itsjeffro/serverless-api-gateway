@@ -58,7 +58,10 @@ describe("Tests PolicyDocument", () => {
       ];
       
       const policyDocument = new PolicyDocument(new LambdaEvent(event));
-      const document = policyDocument.generate(availablePolicies, permissions);
+      const document = policyDocument
+        .setAvailablePolicies(availablePolicies)
+        .setPermissions(permissions)
+        .generate();
 
       const expected = {
         principalId: '',
@@ -94,15 +97,15 @@ describe("Tests PolicyDocument", () => {
         methodArn: 'arn:aws:execute-api:regionName:accountNumber:restApiId/stage/METHOD/resourcePath',
       };
       
-      const availablePolicies = {};
-      
       const policyDocument = new PolicyDocument(new LambdaEvent(event));
-      
-      const document = policyDocument.setContext({
+
+      const document = policyDocument
+        .setAvailablePolicies({})
+        .setContext({
           tenant: "name",
           database: "tenant",
         })
-        .generate(availablePolicies);
+        .generate();
 
       const expected = {
         principalId: '',
