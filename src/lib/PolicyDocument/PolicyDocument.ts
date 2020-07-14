@@ -21,6 +21,8 @@ class Policy {
     denied: [],
   };
   context: object = {};
+  availablePolicies: object = {};
+  permissions: string[] = [];
 
   constructor(lambdaEvent: LambdaEvent) {
     this.lambdaEvent = lambdaEvent;
@@ -32,7 +34,19 @@ class Policy {
     return this;
   }
 
-  generate(availablePolicies: any, permissions?: string[]): PolicyDocument {
+  setAvailablePolicies(availablePolicies: any): this {
+    this.availablePolicies = availablePolicies;
+
+    return this;
+  }
+
+  setPermissions(permissions: string[]): this {
+    this.permissions = permissions;
+
+    return this;
+  }
+
+  buildStatement(availablePolicies: any, permissions?: string[]) {
     let allowed = [];
     let denied = [];
     let permissionList = permissions || [];
@@ -71,6 +85,12 @@ class Policy {
         Resource: denied,
       });
     }
+
+    return statement;
+  }
+
+  generate(): PolicyDocument {
+    const statement = this.buildStatement(this.availablePolicies, this.permissions);
 
     let policy: PolicyDocument = {
       principalId: '',
