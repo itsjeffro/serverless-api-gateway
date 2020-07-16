@@ -17,7 +17,7 @@ resources:
               - "/invocations"
         IdentitySource: method.request.header.Authorization
         IdentityValidationExpression: "Bearer .+"
-        Name: ${self:custom.apiGatewayaAuthorizerName}
+        Name: ${self:custom.jwtAuthorizerName}
         AuthorizerResultTtlInSeconds: '0'
         RestApiId: { Ref: ApiGatewayRestApi }
         Type: TOKEN
