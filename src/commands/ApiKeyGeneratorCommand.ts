@@ -6,11 +6,10 @@ const saltRounds = 10;
 const string = new String();
 const key = string.random(7);
 const randomString = string.random(80);
-
-const plainTextHash = `${key}.${randomString}`;
+const plainTextHash = randomString;
 
 bcrypt.hash(plainTextHash, saltRounds, async function(err: any, hash: any) {
-  console.log("plaintext: ", plainTextHash);
+  console.log("plaintext: ", `${key}.${plainTextHash}`);
 
   console.log("hashed: ", hash);
 
