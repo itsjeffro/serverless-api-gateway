@@ -15,7 +15,8 @@ provider:
   
 custom:
   apiGatewayName: ApiGateway-${self:provider.stage}
-  apiGatewayaAuthorizerName: ClientAuthorizer-${self:provider.stage}
+  jwtAuthorizerName: ClientAuthorizer-${self:provider.stage}
+  apiKeyAuthorizerName: ApiKeyAuthorizer-${self:provider.stage}
   domain:
     stages:
       dev:
@@ -54,6 +55,10 @@ functions:
     environment:
       JWT_SIGNING_KEY: ${env:JWT_SIGNING_KEY}
 
+  apiKeyAuthorizer:
+    handler: dist/handlers/apiKeyAuthorizer.auth
+    cors: true
+
   versionOne:
     handler: dist/handlers/version.versionOne
     events:
@@ -62,9 +67,20 @@ functions:
           method: get
           cors: true
 
+  tenantList:
+    handler: dist/handlers/tenants.list
+    events:
+      - http:
+          path: v1/tenants
+          method: get
+          cors: true
+          authorizer: apiKeyAuthorizer
+
 resources:
   # authorizer
   - ${file(serverless/resources/authorizer/jwt-authorizer.yml):resources}
+
+  - ${file(serverless/resources/authorizer/api-key-authorizer.yml):resources}
 
   # dynamodb tables
   - ${file(serverless/resources/dynamodb/tenants.yml):resources}
@@ -72,6 +88,8 @@ resources:
   - ${file(serverless/resources/dynamodb/service-docs.yml):resources}
             
   - ${file(serverless/resources/dynamodb/service-policies.yml):resources}
+
+  - ${file(serverless/resources/dynamodb/api-keys.yml):resources}
 
   # api gateway
   - ${file(serverless/resources/apigateway/apigateway.yml):resources}
