@@ -1,7 +1,7 @@
 import crypto from 'crypto';
 
 class String {
-  random(length?: number) {
+  random(length?: number): string {
     const chosenLength = length || 32;
 
     let string = '';
