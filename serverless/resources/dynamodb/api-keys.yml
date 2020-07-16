@@ -1,19 +1,19 @@
-# Table: InternalTenantsTable
+# Table: InternalApiKeysTable
 # ===========================
-# - Stores tenant name and database mapping
+# - Stores api keys
 resources:
   Resources:
-    InternalTenantsTable:
+    InternalApiKeysTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: internal_tenants-${self:provider.stage}
+        TableName: internal_api_keys-${self:provider.stage}
         AttributeDefinitions:
           -
-            AttributeName: tenant_name
+            AttributeName: key
             AttributeType: S
         KeySchema:
           -
-            AttributeName: tenant_name
+            AttributeName: key
             KeyType: HASH
         ProvisionedThroughput:
           ReadCapacityUnits: 5

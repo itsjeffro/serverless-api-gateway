@@ -16,5 +16,5 @@ resources:
             AttributeName: service_name_version
             KeyType: HASH
         ProvisionedThroughput:
-          ReadCapacityUnits: 6
-          WriteCapacityUnits: 6
+          ReadCapacityUnits: 5
+          WriteCapacityUnits: 5
