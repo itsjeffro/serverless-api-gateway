@@ -1,7 +1,7 @@
 import crypto from 'crypto';
 
-class ApiKeyGenerator {
-  randomString(length?: number) {
+class String {
+  random(length?: number) {
     const chosenLength = length || 32;
 
     let string = '';
@@ -24,10 +24,6 @@ class ApiKeyGenerator {
 
     return string;
   }
-
-  generate() {
-    return this.randomString();
-  }
 }
 
-export default ApiKeyGenerator;
+export default String;
