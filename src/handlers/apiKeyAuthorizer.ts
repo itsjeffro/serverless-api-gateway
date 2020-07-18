@@ -67,6 +67,7 @@ module.exports.auth = async (event: LambdaEventInterface, context: any, callback
 
   if (isVerified) {
     const document = policyDocument
+      .setPrincipalId(key)
       .setAvailablePolicies(servicePolicy)
       .setPermissions(permissions)
       .generate();
