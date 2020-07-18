@@ -1,5 +1,5 @@
 import TenantInterface from "./TenantInterface";
-import TenantTransformer from "./TenantTrasnformer";
+import TenantTransformer from "./TenantTransformer";
 
 class TenantRepository {
   dynamoDb: any;
