@@ -1,5 +1,3 @@
-import ItemExistsException from "../../repository/ItemExistsException";
-
 class Tenant {
   dynamoDb: any;
 
@@ -17,8 +15,6 @@ class Tenant {
       created_at: Date.now().toString(),
       updated_at: Date.now().toString(),
     }
-
-    const tenantName = item.tenant_name || "";
 
     const params = {
       Item: {
