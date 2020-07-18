@@ -3,6 +3,7 @@ service: api-gateway
 plugins:
   - serverless-dotenv-plugin
   - serverless-domain-manager
+  - serverless-offline
 
 provider:
   name: aws
@@ -73,6 +74,15 @@ functions:
       - http:
           path: v1/tenants
           method: get
+          cors: true
+          authorizer: apiKeyAuthorizer
+
+  tenantCreate:
+    handler: dist/handlers/tenants.create
+    events:
+      - http:
+          path: v1/tenants
+          method: post
           cors: true
           authorizer: apiKeyAuthorizer
 
