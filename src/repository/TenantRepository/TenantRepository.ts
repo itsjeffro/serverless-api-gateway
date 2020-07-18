@@ -41,6 +41,20 @@ class TenantRepository {
       database: item.database ? item.database.S : null,
     };
   }
+
+  async getAll(): Promise<TenantInterface[]> {
+    const params = {
+      TableName: this.getTable(),
+    };
+
+    const dynamo = await this.dynamoDb.scan(params).promise();
+
+    if (dynamo.Count === 0) {
+      return [];
+    }
+
+    return dynamo.Items;
+  }
 }
 
 export default TenantRepository;
