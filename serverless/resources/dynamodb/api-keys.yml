@@ -9,11 +9,11 @@ resources:
         TableName: internal_api_keys-${self:provider.stage}
         AttributeDefinitions:
           -
-            AttributeName: key
+            AttributeName: identifier_key
             AttributeType: S
         KeySchema:
           -
-            AttributeName: key
+            AttributeName: identifier_key
             KeyType: HASH
         ProvisionedThroughput:
           ReadCapacityUnits: 5
