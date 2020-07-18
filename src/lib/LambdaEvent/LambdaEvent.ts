@@ -69,6 +69,16 @@ class LambdaEvent {
     
     return match[1];
   }
+
+  getBody(): any {
+    try {
+      let body = JSON.parse(this.event.body || "");
+      
+      return body;
+    } catch (e) {
+      throw new Error("Problems parsing JSON");
+    }
+  }
 }
 
 export default LambdaEvent;
