@@ -2,5 +2,9 @@
   "tenants.list": {
     "method": "get",
     "resource": "v1/tenants"
+  },
+  "tenants.create": {
+    "method": "post",
+    "resource": "v1/tenants"
   }
 }
