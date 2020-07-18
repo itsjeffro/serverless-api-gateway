@@ -1,7 +1,5 @@
-interface TenantInterface {
-  tenant_name: string
-  database: string
-}
+import TenantInterface from "./TenantInterface";
+import TenantTransformer from "./TenantTrasnformer";
 
 class TenantRepository {
   dynamoDb: any;
@@ -34,12 +32,7 @@ class TenantRepository {
       return null;
     }
 
-    const item = dynamo.Items[0];
-
-    return {
-      tenant_name: item.tenant_name ? item.tenant_name.S : null,
-      database: item.database ? item.database.S : null,
-    };
+    return TenantTransformer.toObject(dynamo.Items[0]);
   }
 
   async getAll(): Promise<TenantInterface[]> {
@@ -53,7 +46,9 @@ class TenantRepository {
       return [];
     }
 
-    return dynamo.Items;
+    return dynamo.Items.map((item: TenantInterface) => {
+      return TenantTransformer.toObject(item);
+    });
   }
 }
 
