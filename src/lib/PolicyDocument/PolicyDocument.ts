@@ -23,6 +23,7 @@ class Policy {
   context: object = {};
   availablePolicies: object = {};
   permissions: string[] = [];
+  principalId: string = "";
 
   constructor(lambdaEvent: LambdaEvent) {
     this.lambdaEvent = lambdaEvent;
@@ -30,6 +31,12 @@ class Policy {
 
   setContext(context: object): this {
     this.context = context;
+
+    return this;
+  }
+
+  setPrincipalId(principalId: string): this {
+    this.principalId = principalId;
 
     return this;
   }
@@ -93,7 +100,7 @@ class Policy {
     const statement = this.buildStatement(this.availablePolicies, this.permissions);
 
     let policy: PolicyDocument = {
-      principalId: '',
+      principalId: this.principalId,
       policyDocument: {
         Version: "2012-10-17",
         Statement: statement,
