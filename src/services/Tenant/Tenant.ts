@@ -44,7 +44,7 @@ class Tenant {
         return null
       }
 
-      throw new e;
+      throw e;
     }
   }
 }
