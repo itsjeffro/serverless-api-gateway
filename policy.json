@@ -1,0 +1,6 @@
+{
+  "tenants.list": {
+    "method": "get",
+    "resource": "v1/tenants"
+  }
+}
