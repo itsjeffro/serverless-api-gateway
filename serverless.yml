@@ -68,6 +68,15 @@ functions:
           method: get
           cors: true
 
+  serviceList:
+    handler: dist/handlers/services.list
+    events:
+      - http:
+          path: v1/services
+          method: get
+          cors: true
+          authorizer: apiKeyAuthorizer
+
   tenantList:
     handler: dist/handlers/tenants.list
     events:

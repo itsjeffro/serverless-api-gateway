@@ -1,3 +1,5 @@
+import ServicePolicyTransformer from "./ServicePolicyTransformer";
+
 class ServicePolicyRepository {
   dynamoDb: any;
   stage: string;
@@ -38,6 +40,22 @@ class ServicePolicyRepository {
     }
 
     return JSON.parse(policy);
+  }
+
+  async getAll(): Promise<[]> {
+    const params = {
+      TableName: this.getTable(),
+    };
+
+    const dynamo = await this.dynamoDb.scan(params).promise();
+
+    if (dynamo.Count === 0) {
+      return [];
+    }
+
+    return dynamo.Items.map((item: any) => {
+      return ServicePolicyTransformer.toObject(item);
+    });
   }
 }
 
