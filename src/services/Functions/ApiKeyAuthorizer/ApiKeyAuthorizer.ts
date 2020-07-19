@@ -82,6 +82,8 @@ class ApiKeyAuthorizer implements HandleInterface {
         .setAvailablePolicies(policies)
         .setPermissions(permissions)
         .generate();
+
+      this.logger.log(document);
   
       return document;
     }
