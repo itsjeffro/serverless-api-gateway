@@ -10,9 +10,13 @@ module.exports.list = async (event: any) => {
   
   const tenantRepository = new TenantRepository(dynamoDb, stage);
 
+  let data = {
+    data: await tenantRepository.getAll(),
+  }
+
   return {
     statusCode: 200,
-    body: JSON.stringify(await tenantRepository.getAll()),
+    body: JSON.stringify(data),
   };
 }
 
