@@ -6,7 +6,7 @@ import LambdaEvent from "../lib/LambdaEvent";
 import PolicyDocument from "../lib/PolicyDocument";
 import ServicePolicyRepository from '../repository/ServicePolicyRepository';
 import Logger from '../lib/Logger';
-import Authorizer from '../services/Authorizer';
+import JwtAuthorizer from '../services/Functions/JwtAuthorizer';
 import TenantRepository from '../repository/TenantRepository';
 
 let dynamoDb = new AWS.DynamoDB({ region: "ap-southeast-2" });
@@ -26,7 +26,7 @@ module.exports.auth = async (event: LambdaEventInterface, context: any, callback
     const servicePolicyRepository = new ServicePolicyRepository(dynamoDb, stage);
     const tenantRepository = new TenantRepository(dynamoDb, stage);
 
-    const authorizer = new Authorizer(
+    const jwtAuthorizer = new JwtAuthorizer(
       jwt,
       logger,
       policyDocument,
@@ -34,7 +34,7 @@ module.exports.auth = async (event: LambdaEventInterface, context: any, callback
       tenantRepository
     );
 
-    const response = await authorizer.handle(lambdaEvent);
+    const response = await jwtAuthorizer.handle(lambdaEvent);
     
     return callback(null, response);
   } catch (e) {
