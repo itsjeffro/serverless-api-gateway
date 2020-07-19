@@ -83,7 +83,7 @@ class ApiKeyAuthorizer implements HandleInterface {
         .setPermissions(permissions)
         .generate();
 
-      this.logger.log(document);
+      this.logger.log(JSON.stringify(document));
   
       return document;
     }
