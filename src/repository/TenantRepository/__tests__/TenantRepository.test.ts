@@ -29,7 +29,6 @@ describe("Tests TenantRepository", () => {
 
       const expected = {
         tenant_name: "tenant",
-        database: "database",
       };
 
       expect(response).toMatchObject(expected);
