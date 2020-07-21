@@ -103,8 +103,6 @@ resources:
 
   # dynamodb tables
   - ${file(serverless/resources/dynamodb/tenants.yml):resources}
-  
-  - ${file(serverless/resources/dynamodb/service-docs.yml):resources}
             
   - ${file(serverless/resources/dynamodb/service-policies.yml):resources}
 
