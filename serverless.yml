@@ -51,7 +51,7 @@ package:
 
 functions:
   clientAuthorizer:
-    handler: dist/handlers/authorizer.auth
+    handler: dist/handlers/jwtAuthorizer.auth
     cors: true
     environment:
       JWT_SIGNING_KEY: ${env:JWT_SIGNING_KEY}
