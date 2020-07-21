@@ -6,12 +6,24 @@ import TenantRepository from '../../../repository/TenantRepository';
 import HandleInterface from '../HandeInterface';
 
 class JwtAuthorizer implements HandleInterface {
+  /** @var any */
   jwt: any;
+
+  /** @var LoggerInterface */
   logger: LoggerInterface;
+
+  /** @var PolicyDocument */
   policyDocument: PolicyDocument;
+
+  /** @var ServicePolicy */
   servicePolicyRepository: ServicePolicy;
+
+  /** @var TenantRepository */
   tenantRepository: TenantRepository;
 
+  /**
+   * JwtAuthorizer constructor. 
+   */
   constructor(
     jwt: any,
     logger: LoggerInterface,
@@ -27,7 +39,7 @@ class JwtAuthorizer implements HandleInterface {
   }
 
   /**
-   * Main handle.
+   * The main method for executing this class.
    */
   async handle(lambdaEvent: LambdaEvent) {
     const verifiedToken = this.verifyToken(lambdaEvent.getToken());

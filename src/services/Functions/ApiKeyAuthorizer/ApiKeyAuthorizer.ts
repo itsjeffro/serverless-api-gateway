@@ -8,11 +8,21 @@ import ApiKeyRepository from "../../../repository/ApiKeyRepository";
 import PolicyDocument from "../../../lib/PolicyDocument";
 
 class ApiKeyAuthorizer implements HandleInterface {
+  /** @var LoggerInterface */
   logger: LoggerInterface;
+
+  /** @var ApiKeyRepository */
   apiKeyRepository: ApiKeyRepository;
+
+  /** @var ServicePolicyRepository */
   servicePolicyRepository: ServicePolicyRepository;
+
+  /** @var PolicyDocument */
   policyDocument: PolicyDocument;
 
+  /**
+   * ApiKeyAuthorizer constructor.
+   */
   constructor(
     logger: LoggerInterface,
     apiKeyRepository: ApiKeyRepository,
@@ -25,6 +35,9 @@ class ApiKeyAuthorizer implements HandleInterface {
     this.policyDocument = policyDocument;
   }
 
+  /**
+   * The main method for executing this class.
+   */
   async handle(lambdaEvent: LambdaEvent): Promise<any> {
     const bearer = lambdaEvent.getToken();
     const apiKeySegments = bearer.split('.');
@@ -91,6 +104,9 @@ class ApiKeyAuthorizer implements HandleInterface {
     throw new Error("Unauthorized");
   }
 
+  /**
+   * Returns a list of distinct services from the API key's allowed permissions.
+   */
   getServicesFromPermissions(permissions: string[]): string[] {
     let services = [];
 
@@ -106,6 +122,10 @@ class ApiKeyAuthorizer implements HandleInterface {
     return services;
   }
 
+  /**
+   * Returns a service name/version that follows the internal-services 
+   * table partition key value convention. For example, "service-v1".
+   */
   getServiceName(resource: string): string {
     const resourceSegments = resource.split('/');
     const versionCheck = /v[0-9]/g;
@@ -122,6 +142,9 @@ class ApiKeyAuthorizer implements HandleInterface {
     return serviceName;
   }
 
+  /**
+   * Returns the list of permissions associated with the API key.
+   */
   getPermissions(permissions: string[]): string[] {
     return permissions.map((permission: string) => {
       let permissionSegments = permission.split("/");
