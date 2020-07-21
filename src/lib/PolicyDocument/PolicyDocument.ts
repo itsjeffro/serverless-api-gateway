@@ -2,57 +2,89 @@ import LambdaEvent from "../LambdaEvent";
 
 interface PolicyDocument {
   principalId: string;
+
   policyDocument: {
     Version: string;
     Statement: any[];
   }
+
   context?: object;
 }
 
 interface Resources {
   allowed: string[];
+
   denied: string[];
 }
 
 class Policy {
+  /** @var LambdaEvent */
   lambdaEvent: LambdaEvent;
+
+  /** @var Resources */
   resources: Resources = {
     allowed: [],
     denied: [],
   };
+
+  /** @var object */
   context: object = {};
+
+  /** @var object */
   availablePolicies: object = {};
+
+  /** @var string[] */
   permissions: string[] = [];
+
+  /** @var string */
   principalId: string = "";
 
+  /**
+   * PolicyDocument constructor.
+   */
   constructor(lambdaEvent: LambdaEvent) {
     this.lambdaEvent = lambdaEvent;
   }
 
+  /**
+   * Setting the context will allow for passing information to the next lambda.
+   */
   setContext(context: object): this {
     this.context = context;
 
     return this;
   }
 
+  /**
+   * Sets the policy document's principal id.
+   */
   setPrincipalId(principalId: string): this {
     this.principalId = principalId;
 
     return this;
   }
 
+  /**
+   * Sets the available services' policies.
+   */
   setAvailablePolicies(availablePolicies: any): this {
     this.availablePolicies = availablePolicies;
 
     return this;
   }
 
+  /**
+   * Sets the permissions that the token user can perform.
+   */
   setPermissions(permissions: string[]): this {
     this.permissions = permissions;
 
     return this;
   }
 
+  /**
+   * Builds the policy documents statements.
+   */
   buildStatement(availablePolicies: any, permissions?: string[]) {
     let allowed = [];
     let denied = [];
@@ -96,6 +128,9 @@ class Policy {
     return statement;
   }
 
+  /**
+   * Generates the complete policy document.
+   */
   generate(): PolicyDocument {
     const statement = this.buildStatement(this.availablePolicies, this.permissions);
 
