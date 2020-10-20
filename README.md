@@ -1,4 +1,4 @@
-# Serverless API Gateway
+# Serverless - API Gateway
 
 A reusable AWS Api Gateway using the Serverless framework.
 
